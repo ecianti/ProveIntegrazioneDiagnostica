@@ -3,7 +3,9 @@
 import threading
 import time
 import datetime
-from utility import gfib, file_local_path, path_chiavetta
+from utility import my_fib
+
+import utility
 
 
 
@@ -26,10 +28,9 @@ class StoppableThread(threading.Thread):
     def run(self):
         pass
 
-import shutil
+
 
 class LoggerThread(StoppableThread):
-
 
 
     def write_log(self):  # definisce funzione del log dei dati
@@ -38,11 +39,13 @@ class LoggerThread(StoppableThread):
             if not self.stopped():
                 now = datetime.datetime.now()
                 time.sleep(2)
-                log_string = "{:4} {}{}{}".format(self.n, str(now.isoformat()), " " * 10, gfib)
+                my_fib(n)
+                print(my_fib(n))
+                log_string = "{:4} {}{}{}".format(self.n, str(now.isoformat()), " " * 10, my_fib(n))
                 print(log_string)
                 with open(file_local_path, "a") as f:
                         time.sleep(2)
-                        f.write(log_string)
+                        f.write(log_string + "\n")
                         f.close()
 
             else:
@@ -51,15 +54,47 @@ class LoggerThread(StoppableThread):
     def run(self):
         self.write_log()
 
+
+
+
+import shutil
+import os
+from utility import *
+from mount import mount, is_mounted
+n = 0
+
+
 class Copier(StoppableThread):
+        def copier(self):
 
-    def __init__(self, n):
 
-        super().__init__(n)
-        self.os = None
-        self.shutil = None
+            logger = None
 
-    def copier(self):
-        self.shutil.copy2(file_local_path, path_chiavetta)      #copia il file da locale a chiavetta
-        self.os.remove(file_local_path) #dove va messo, cancellerebbe il file da locale
+            if not (logger and logger.is_alive()):
+                    logger = LoggerThread(n)
+                    logger.start()
 
+
+                    if devices:  # controlla se c'e' la chiavetta
+                        device = devices[0]
+                        path_chiavetta = get_media_path(device)
+                        mount(device)  #monta la chiavetta
+
+
+
+                        if is_mounted(device): #controlla se e' montata la usb
+                            if logger.is_alive():
+                                print("Salvataggio su chiavetta")
+                                logger.join()
+                                logger.stop()
+                                shutil.copy2(file_local_path, path_chiavetta)      #copia il file da locale a chiavetta
+                                os.remove(file_local_path) #dove va messo, cancellerebbe il file da locale
+                            else:
+                                pass
+                    else:
+                        logger.join()
+
+
+
+        def run(self):
+            self.copier()

@@ -1,54 +1,33 @@
 import time
-
-from StoppableThread import LoggerThread, Copier
+from StoppableThread import Copier
 from mount import *
-from utility import my_fib, gfib
+from utility import  my_pane, gfib
+from StoppableThread import n
 
-n = 0
-scrittura_in_locale = True
-logger = None
 varcopy = None
+
 try:
     while True:
         n += 1
-        x = my_fib(n)
-        gfib = x
+        my_pane(n)
+        print(gfib)
         time.sleep(1)
         devices = list_media_devices()
         time.sleep(1)
-        #
-        if scrittura_in_locale:
-            if not (logger and logger.is_alive()):
-                logger = LoggerThread(n)
-                logger.start()
-                scrittura_in_locale = False
-        else:
-            logger.join()
-            print("Salvataggio su chiavetta")
-            if devices:  # controlla se c'e' la chiavetta
+        varcopy = Copier(n)
+        varcopy.start()
+        varcopy.join()
+        if varcopy.is_alive():
+            varcopy.stop()
 
-                  device = devices[0]
-                  path_chiavetta = get_media_path(device)
-                  mount(device)  #monta la chiavetta
 
-                  if is_mounted(device): #controlla se e' montata la usb
-                      if logger.is_alive():
-                          logger.stop()
-                          varcopy = Copier(n)
-                          varcopy.start()
-            scrittura_in_locale = True
-
-            if varcopy.is_alive():
-                varcopy.stop()
-
-            scrittura_in_locale = True
         #
         #     else:# se non c'e' la chiavetta continua a scrivere ciclicamente sul file locale
         #         pass
 except KeyboardInterrupt:
-    logger.stop()
+    varcopy.stop()
 
-'''
+''' SCRITTURA IN R+
             x = open(file_local_path, "r+")
             for j in range(100):
           
