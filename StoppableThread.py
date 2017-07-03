@@ -35,11 +35,11 @@ class LoggerThread(StoppableThread):
 
         for i in range(5):
             if not self.stopped():
-                now = datetime.datetime.now()
+                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 time.sleep(2)
                 utility.my_glob(n)
                 print(utility.gfib)
-                log_string = "{:4} {}{}{}".format(self.n, str(now.isoformat()), " " * 10, utility.gfib)
+                log_string = "{:4} {}{}{}".format(self.n, str(now), " " * 10, utility.gfib)
                 print(log_string)
                 with open(file_local_path, "a") as f:
                         time.sleep(2)
