@@ -1,15 +1,14 @@
 import time
 from StoppableThread import Copier
 from mount import *
-from utility import  my_pane, gfib
+from utility import my_glob, gfib
 from StoppableThread import n
-
 varcopy = None
 
 try:
     while True:
         n += 1
-        my_pane(n)
+        my_glob(n)
         print(gfib)
         time.sleep(1)
         devices = list_media_devices()
@@ -19,7 +18,7 @@ try:
         varcopy.join()
         if varcopy.is_alive():
             varcopy.stop()
-
+            print("stop copier")
 
         #
         #     else:# se non c'e' la chiavetta continua a scrivere ciclicamente sul file locale

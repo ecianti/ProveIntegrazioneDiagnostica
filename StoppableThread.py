@@ -3,8 +3,6 @@
 import threading
 import time
 import datetime
-from utility import my_fib
-
 import utility
 
 
@@ -39,9 +37,9 @@ class LoggerThread(StoppableThread):
             if not self.stopped():
                 now = datetime.datetime.now()
                 time.sleep(2)
-                my_fib(n)
-                print(my_fib(n))
-                log_string = "{:4} {}{}{}".format(self.n, str(now.isoformat()), " " * 10, my_fib(n))
+                utility.my_glob(n)
+                print(utility.gfib)
+                log_string = "{:4} {}{}{}".format(self.n, str(now.isoformat()), " " * 10, utility.gfib)
                 print(log_string)
                 with open(file_local_path, "a") as f:
                         time.sleep(2)
@@ -66,20 +64,18 @@ n = 0
 
 class Copier(StoppableThread):
         def copier(self):
-
-
             logger = None
 
             if not (logger and logger.is_alive()):
                     logger = LoggerThread(n)
                     logger.start()
 
-
+                    print(devices)
                     if devices:  # controlla se c'e' la chiavetta
                         device = devices[0]
                         path_chiavetta = get_media_path(device)
                         mount(device)  #monta la chiavetta
-
+                        print("DEVICE EXISTS")
 
 
                         if is_mounted(device): #controlla se e' montata la usb
@@ -91,9 +87,12 @@ class Copier(StoppableThread):
                                 os.remove(file_local_path) #dove va messo, cancellerebbe il file da locale
                             else:
                                 pass
+                        else:
+                            pass
+
                     else:
                         logger.join()
-
+                        print("MAREMMA CANE non vede la chiavetta")
 
 
         def run(self):

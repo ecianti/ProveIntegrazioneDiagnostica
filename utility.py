@@ -1,7 +1,9 @@
 
 from mount import get_media_path, list_media_devices
-x = 0
+global gfib
 gfib = 0
+
+
 
 devices = 0
 device = 0
@@ -14,8 +16,7 @@ if devices:
     path_chiavetta = get_media_path(device)
 
 
-
-def my_fib(n):  # definisce fibonacci
+def my_fib(n): # definisce fibonacci
     if n == 0:
         return 0
     elif n == 1:
@@ -23,12 +24,10 @@ def my_fib(n):  # definisce fibonacci
     else:
         return my_fib(n - 1) + my_fib(n - 2)
 
-def my_pane(n):
+def my_glob(n):
 
     global gfib
-    x = my_fib(n)
-    gfib = x
-    print("ehfffffffff     " + str (my_fib(n)))
-
+    gfib = my_fib(n)
+    print("locale" + "\n" + "fib =  " + str(my_fib(n)))
     return gfib
 
