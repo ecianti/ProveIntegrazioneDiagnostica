@@ -1,7 +1,7 @@
-
 from mount import get_media_path, list_media_devices
-global gfib
+
 gfib = 0
+n = 0
 
 
 
@@ -24,10 +24,4 @@ def my_fib(n): # definisce fibonacci
     else:
         return my_fib(n - 1) + my_fib(n - 2)
 
-def my_glob(n):
-
-    global gfib
-    gfib = my_fib(n)
-    print("locale" + "\n" + "fib =  " + str(my_fib(n)))
-    return gfib
 

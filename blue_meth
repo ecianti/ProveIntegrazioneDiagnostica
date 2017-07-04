@@ -1,8 +1,0 @@
-global i
-i = 0
-from utility import my_fib
-for i in range(10000):
-    i += 1
-    my_fib(i)
-    print("something happened")
-

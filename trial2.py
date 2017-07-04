@@ -1,5 +1,3 @@
-from heisenberg import fibbone
-print("gfuwligfuehwifuh")
-while True:
-
-    print("{0}evvaiiii".format(str(fibbone)))
+new_file = "/home/stage/PycharmProjects/dir_thread/lebbra.txt"
+with open(new_file, "a+") as k:
+     k.close()
